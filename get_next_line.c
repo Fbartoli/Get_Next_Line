@@ -6,7 +6,7 @@
 /*   By: fbartoli <fbartoli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:58:15 by fbartoli          #+#    #+#             */
-/*   Updated: 2018/11/27 01:57:33 by fbartoli         ###   ########.fr       */
+/*   Updated: 2018/11/27 02:50:19 by fbartoli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,34 +20,40 @@ int		get_next_line(int fd, char **line)
 {
 	static char		*save;
 	int				ret;
-	char			*buf;
+	char			buf[BUFF_SIZE + 1];
+	char			*tmp;
 
-	ret = read(fd, buf, BUFFER_SIZE);
+	ret = read(fd, buf, BUFF_SIZE);
 	buf[ret] = '\0';
+	tmp = ft_strdup(buf);
 	while (buf[ret] != '\n')
-		ret--;
-	printf("buf, %s:'\n'", buf);
+			ret--;
+	buf[ret] = '\0';
 	*line = ft_strsub(buf, 0, ret);
-	save = ft_strsub(buf, ret, BUFFER_SIZE - ret);
+	save = ft_strsub(tmp, ret, BUFF_SIZE);
+	printf("buf, %s:'\n'", buf);
 	printf("line, %s:'\n'", *line);
 	printf("save, %s:'\n'", save);
-	return (1);
+	if (*save)
+	{
+		ft_bzero(save, ft_strlen(save));
+		return (1);
+	}
+	return (0);
 	}
 
 	int	main(int argc, char ** argv)
 {
 	int		fd;
-	int		fd2;
 	char	*line;
-	char	n = '\n';
 
 	if (argc < 2)
 	{
 		printf("Usage %s <filename>\n", argv[0]);
 		return (1);
 	}
-	fd = open(argv[1], O_RDONLY);
-	if (fd == -1 || fd2 == -1)
+	fd = open("test.txt", O_RDONLY);
+	if (fd == -1)
 	{
 		perror("open");
 		close(fd);
@@ -55,8 +61,9 @@ int		get_next_line(int fd, char **line)
 	}
 	while (get_next_line(fd, &line) == 1)
 	{
-		write(fd2, line, strlen(line));				// attention si le fichier test n a pas de \n et que ca affiche une erreur c'est normal
+		write(fd, line, strlen(line));				// attention si le fichier test n a pas de \n et que ca affiche une erreur c'est normal
 		free(line);							// vous inquietez pas
 	}
+	close(fd);
 	return (0);
 }
