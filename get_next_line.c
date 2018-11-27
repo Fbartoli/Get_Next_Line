@@ -6,7 +6,7 @@
 /*   By: fbartoli <fbartoli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:58:15 by fbartoli          #+#    #+#             */
-/*   Updated: 2018/11/27 19:22:58 by fbartoli         ###   ########.fr       */
+/*   Updated: 2018/11/27 19:23:48 by fbartoli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int		get_next_line(int fd, char **line)
 	i = 1;
 	if (!save)
 		save = read_line(save, fd);
-	printf("save sortie read: %s\n", save);
+	//printf("save sortie read: %s\n", save);
 	if (ft_strchr(save, '\n'))
 	{
 		while (save[i] != '\n' && save[i] != '\0')
@@ -55,9 +55,9 @@ int		get_next_line(int fd, char **line)
 		*line = ft_strdup(save);
 		save[0] = '\0';
 	}
-	printf("i : %d '\n", i);
-	printf("save sortie sub : %s\n", save);
-	printf("line : %s\n", *line);
+	//printf("i : %d '\n", i);
+	//printf("save sortie sub : %s\n", save);
+	//printf("line : %s\n", *line);
 	if (ft_strlen(save) > 1)
 		return (1);
 	return (0);
