@@ -6,7 +6,7 @@
 /*   By: fbartoli <fbartoli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:51:00 by fbartoli          #+#    #+#             */
-/*   Updated: 2018/11/26 17:00:22 by fbartoli         ###   ########.fr       */
+/*   Updated: 2018/11/27 01:22:20 by fbartoli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,4 +17,4 @@
 
 int		get_next_line(int fd, char **line);
 
-#endif
+#endif=
