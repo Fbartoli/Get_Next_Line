@@ -6,7 +6,7 @@
 /*   By: fbartoli <fbartoli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:58:15 by fbartoli          #+#    #+#             */
-/*   Updated: 2018/12/01 04:40:36 by fbartoli         ###   ########.fr       */
+/*   Updated: 2018/12/01 16:13:59 by fbartoli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ char	*parsing_save(char *save, char **line)
 		if(!(*line = ft_strncpy(*line, save, ft_strlen(save))))
 			return (NULL);
 		ft_strdel(&save);
+		return (save);
 	}
 	return (save);
 }
@@ -76,16 +77,16 @@ int		get_next_line(int fd, char **line)
 	return (0);
 }
 
-/*int			main(int ac, char **av)
+int			main(int ac, char **av)
 {
 	int		fd;
 	char	*line;
 
 	line = NULL;
 	fd = open(av[ac-1], O_RDONLY);
-	while (get_next_line(fd, &line))
+	while (get_next_line(fd, &line) > 0)
 	{
 		ft_putendl(line);
 	}
 	close(fd);
-}*/
+}
