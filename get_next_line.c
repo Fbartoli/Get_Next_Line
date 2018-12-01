@@ -6,7 +6,7 @@
 /*   By: fbartoli <fbartoli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:58:15 by fbartoli          #+#    #+#             */
-/*   Updated: 2018/12/01 03:34:30 by fbartoli         ###   ########.fr       */
+/*   Updated: 2018/12/01 04:40:36 by fbartoli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char	*parsing_save(char *save, char **line)
 			i++;
 		if (!(*line = ft_strsub(save, 0, i)))
 			return (NULL);
-		if (!(save = ft_strsub(save, i, ft_strlen(save))))
+		if (!(save = ft_strsub(save, i + 1, ft_strlen(save))))
 			return (NULL);
 		return (save);
 	}
@@ -71,7 +71,7 @@ int		get_next_line(int fd, char **line)
 	}
 	if (!(save = parsing_save(save, line)))
 		return (-1);
-	if (ft_strlen(*line) > 1)
+	if (*line)
 		return (1);
 	return (0);
 }
@@ -81,9 +81,9 @@ int		get_next_line(int fd, char **line)
 	int		fd;
 	char	*line;
 
-	line = strdup("");
+	line = NULL;
 	fd = open(av[ac-1], O_RDONLY);
-	while (get_next_line(fd, &line) > 0)
+	while (get_next_line(fd, &line))
 	{
 		ft_putendl(line);
 	}
