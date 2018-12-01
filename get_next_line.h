@@ -6,7 +6,7 @@
 /*   By: fbartoli <fbartoli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:51:00 by fbartoli          #+#    #+#             */
-/*   Updated: 2018/11/27 19:20:43 by fbartoli         ###   ########.fr       */
+/*   Updated: 2018/12/01 03:35:38 by fbartoli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 # define BUFF_SIZE 1
 # include "libft.h"
 
-char	*read_line(char	*save, int fd);
+char	*read_line(char	**save, char *buf, int fd);
 int		get_next_line(int fd, char **line);
 
 #endif
