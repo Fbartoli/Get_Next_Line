@@ -6,7 +6,7 @@
 /*   By: fbartoli <fbartoli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:58:15 by fbartoli          #+#    #+#             */
-/*   Updated: 2018/12/06 15:37:19 by fbartoli         ###   ########.fr       */
+/*   Updated: 2018/12/06 17:13:58 by fbartoli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	*parsing_save(char *save, char **line)
 	{
 		if (*save)
 		{
-			if(!(*line = ft_strncpy(*line, save, ft_strlen(save))))
+			if(!(*line = ft_strdup(save)))
 				return (NULL);
 		}
 		else
@@ -84,7 +84,7 @@ int		get_next_line(int fd, char **line)
 	return (0);
 }
 
-int			main(int ac, char **av)
+/*int			main(int ac, char **av)
 {
 	int		fd;
 	char	*line;
@@ -99,4 +99,4 @@ int			main(int ac, char **av)
 		i++;
 	}
 	close(fd);
-}
+}*/
