@@ -6,7 +6,7 @@
 /*   By: fbartoli <fbartoli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:58:15 by fbartoli          #+#    #+#             */
-/*   Updated: 2018/12/01 16:13:59 by fbartoli         ###   ########.fr       */
+/*   Updated: 2018/12/06 15:37:19 by fbartoli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ char	*read_line(char **save, char *buf, int fd)
 		tmp = ft_strjoin(tmp, buf);
 	}
 	*save = ft_strdup(tmp);
-	free(buf);
-	free(tmp);
+	ft_strdel(&buf);
+	ft_strdel(&tmp);
 	return (*save);
 }
 
@@ -50,9 +50,16 @@ char	*parsing_save(char *save, char **line)
 	}
 	if(!ft_strchr(save, '\n'))
 	{
-		if(!(*line = ft_strncpy(*line, save, ft_strlen(save))))
-			return (NULL);
-		ft_strdel(&save);
+		if (*save)
+		{
+			if(!(*line = ft_strncpy(*line, save, ft_strlen(save))))
+				return (NULL);
+		}
+		else
+		{
+			ft_strclr(*line);
+		}
+		ft_strclr(save);
 		return (save);
 	}
 	return (save);
@@ -72,7 +79,7 @@ int		get_next_line(int fd, char **line)
 	}
 	if (!(save = parsing_save(save, line)))
 		return (-1);
-	if (*line)
+	if (ft_strlen(*line) > 1)
 		return (1);
 	return (0);
 }
@@ -81,12 +88,15 @@ int			main(int ac, char **av)
 {
 	int		fd;
 	char	*line;
+	int		i;
 
 	line = NULL;
+	i = 0;
 	fd = open(av[ac-1], O_RDONLY);
 	while (get_next_line(fd, &line) > 0)
 	{
 		ft_putendl(line);
+		i++;
 	}
 	close(fd);
 }
