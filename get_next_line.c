@@ -6,7 +6,7 @@
 /*   By: flbartol <flbartol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:58:15 by fbartoli          #+#    #+#             */
-/*   Updated: 2018/12/10 13:09:38 by flbartol         ###   ########.fr       */
+/*   Updated: 2018/12/10 19:13:35 by flbartol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,15 @@
 
 char	*read_line(char **save, char *buf, int fd)
 {
-	char	*tmp;
 	int		ret;
 
-	tmp = ft_strdup("");
+	*save = ft_strnew(1);
 	while ((ret = read(fd, buf, BUFF_SIZE)) > 0)
 	{
 		buf[ret] = '\0';
-		tmp = ft_strjoin(tmp, buf);
+		*save = ft_strjoin(*save, buf);
 	}
-	*save = ft_strdup(tmp);
-	ft_strdel(&buf);
-	ft_strdel(&tmp);
+	free(buf);
 	return (*save);
 }
 
@@ -75,5 +72,6 @@ int		get_next_line(int fd, char **line)
 		return (-1);
 	if (ft_strlen(*line) > 1)
 		return (1);
+	free(buf);
 	return (0);
 }
