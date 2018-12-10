@@ -1,3 +1,3 @@
 make -C libft/ fclean && make -C libft/
-gcc -g -I libft/includes get_next_line.c main.c get_next_line.h libft/libft.a
-./a.out test.txt
+gcc -Wall -Werror -Wextra -I libft/includes get_next_line.c get_next_line.h main.c libft/libft.a
+./a.out bible.txt

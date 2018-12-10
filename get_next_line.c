@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flbartol <flbartol@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fbartoli <fbartoli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:58:15 by fbartoli          #+#    #+#             */
-/*   Updated: 2018/12/10 19:13:35 by flbartol         ###   ########.fr       */
+/*   Updated: 2018/12/10 21:14:13 by fbartoli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,5 @@ int		get_next_line(int fd, char **line)
 		return (-1);
 	if (ft_strlen(*line) > 1)
 		return (1);
-	free(buf);
 	return (0);
 }
