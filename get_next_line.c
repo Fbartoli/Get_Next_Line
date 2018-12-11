@@ -6,71 +6,100 @@
 /*   By: fbartoli <fbartoli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:58:15 by fbartoli          #+#    #+#             */
-/*   Updated: 2018/12/10 21:14:13 by fbartoli         ###   ########.fr       */
+/*   Updated: 2018/12/11 13:37:54 by fbartoli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*read_line(char **save, char *buf, int fd)
-{
-	int		ret;
-
-	*save = ft_strnew(1);
-	while ((ret = read(fd, buf, BUFF_SIZE)) > 0)
-	{
-		buf[ret] = '\0';
-		*save = ft_strjoin(*save, buf);
-	}
-	free(buf);
-	return (*save);
-}
-
-char	*parsing_save(char *save, char **line)
-{
-	int				i;
-
-	i = 1;
-	if (ft_strchr(save, '\n'))
-	{
-		while (save[i] != '\n' && save[i] != '\0')
-			i++;
-		if (!(*line = ft_strsub(save, 0, i)))
-			return (NULL);
-		if (!(save = ft_strsub(save, i + 1, ft_strlen(save))))
-			return (NULL);
-		return (save);
-	}
-	if (!ft_strchr(save, '\n'))
-	{
-		if (*save)
-		{
-			if (!(*line = ft_strdup(save)))
-				return (NULL);
-		}
-		else
-			ft_strclr(*line);
-		ft_strclr(save);
-	}
-	return (save);
-}
-
 int		get_next_line(int fd, char **line)
 {
-	static char		*save;
-	char			*buf;
+	char			buf[BUFF_SIZE + 1];
+	int				ret;
+	int				res;
+	static t_lst	*start;
 
-	if (fd < 0 || !line || BUFF_SIZE <= 0 || !(buf = ft_strnew(BUFF_SIZE + 1)) \
-		|| read(fd, buf, 0) == -1)
-		return (-1);
-	if (!save)
+	while ((ret = read(fd, buf, BUFF_SIZE)) != 0)
 	{
-		if (!(save = read_line(&save, buf, fd)))
+		if (ret < 0 || fd < 0 || !line || BUFF_SIZE <= 0)
+			return (-1);
+		buf[ret] = '\0';
+		if ((res = check_extra(fd, buf, &start)) == 1)
+		{
+			*line = get_extra(fd, &start);
+			return (1);
+		}
+		if (res == -1)
 			return (-1);
 	}
-	if (!(save = parsing_save(save, line)))
-		return (-1);
-	if (ft_strlen(*line) > 1)
+	if ((*line = get_extra(fd, &start)) != NULL)
+		return (1);
+	return (0);
+}
+
+char	*get_extra(int fd, t_lst **start)
+{
+	t_lst	*elem;
+	char	*begin;
+	char	*end;
+	char	*tmp;
+
+	elem = find_extra(fd, start);
+	if (elem->left == NULL)
+		return (NULL);
+	if ((end = ft_strstr((char *)elem->left, "\n")) != NULL)
+	{
+		if (!(begin = ft_strsub((char *)elem->left, 0,
+						(elem->left_size - ft_strlen(++end) - 2))))
+			return (NULL);
+		tmp = elem->left;
+		elem->left = (ft_strlen(end) == 0) ? NULL : (void *)ft_strdup(end);
+		elem->left_size = ft_strlen(end) + 1;
+		free(tmp);
+	}
+	else
+	{
+		if (!(begin = ft_strdup((char *)elem->left)))
+			return (NULL);
+		free(elem->left);
+		elem->left = NULL;
+		elem->left_size = 0;
+	}
+	return (begin);
+}
+
+t_lst	*find_extra(int fd, t_lst **start)
+{
+	t_lst	*tmp;
+
+	tmp = *start;
+	while (tmp && tmp->fd != fd)
+		tmp = tmp->next;
+	return (tmp);
+}
+
+int		check_extra(int fd, char *buf, t_lst **start)
+{
+	t_lst	*elem;
+	char	*tmp;
+
+	elem = find_extra(fd, start);
+	if (elem == NULL)
+	{
+		if (!(elem = (t_lst *)ft_lstnew((void *)buf, (ft_strlen(buf) + 1))))
+			return (-1);
+		elem->fd = fd;
+		ft_lstadd((t_list **)start, (t_list *)elem);
+	}
+	else
+	{
+		if (!(tmp = ft_strjoin((char *)elem->left, buf)))
+			return (-1);
+		free(elem->left);
+		elem->left = (void *)tmp;
+		elem->left_size = ft_strlen(tmp) + 1;
+	}
+	if (ft_strstr((char *)elem->left, "\n") != NULL)
 		return (1);
 	return (0);
 }
