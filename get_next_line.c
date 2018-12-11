@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbartoli <fbartoli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flbartol <flbartol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:58:15 by fbartoli          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2018/12/11 20:36:33 by fbartoli         ###   ########.fr       */
+=======
+/*   Updated: 2018/12/11 18:45:48 by flbartol         ###   ########.fr       */
+>>>>>>> c5c00efc8b305e42664720b0401d0105053072e9
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +25,7 @@ int		get_next_line(int fd, char **line)
 
 	while ((ret = read(fd, buf, BUFF_SIZE)) != 0)
 	{
-		if (ret < 0 || fd < 0 || !line || BUFF_SIZE <= 0)
+		if (ret < 0 || fd < 0 || !line || BUFF_SIZE < 1)
 			return (-1);
 		buf[ret] = '\0';
 		if ((res = check_extra(fd, buf, &start)) == 1)
