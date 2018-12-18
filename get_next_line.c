@@ -3,107 +3,65 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flbartol <flbartol@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fbartoli <fbartoli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:58:15 by fbartoli          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2018/12/11 20:36:33 by fbartoli         ###   ########.fr       */
-=======
-/*   Updated: 2018/12/11 18:45:48 by flbartol         ###   ########.fr       */
->>>>>>> c5c00efc8b305e42664720b0401d0105053072e9
+/*   Updated: 2018/12/12 14:03:16 by fbartoli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int		get_next_line(int fd, char **line)
+int		ft_new_line(char **s, char **line, int fd, int ret)
 {
-	char			buf[BUFF_SIZE + 1];
-	int				ret;
-	int				res;
-	static t_lst	*start;
+	char	*tmp;
+	int		len;
 
-	while ((ret = read(fd, buf, BUFF_SIZE)) != 0)
+	len = 0;
+	while (s[fd][len] != '\n' && s[fd][len] != '\0')
+		len++;
+	if (s[fd][len] == '\n')
 	{
-		if (ret < 0 || fd < 0 || !line || BUFF_SIZE < 1)
-			return (-1);
+		*line = ft_strsub(s[fd], 0, len);
+		tmp = ft_strdup(s[fd] + len + 1);
+		free(s[fd]);
+		s[fd] = tmp;
+		if (s[fd][0] == '\0')
+			ft_strdel(&s[fd]);
+	}
+	else if (s[fd][len] == '\0')
+	{
+		if (ret == BUFF_SIZE)
+			return (get_next_line(fd, line));
+		*line = ft_strdup(s[fd]);
+		ft_strdel(&s[fd]);
+	}
+	return (1);
+}
+
+int		get_next_line(const int fd, char **line)
+{
+	static char	*s[255];
+	char		buf[BUFF_SIZE + 1];
+	char		*tmp;
+	int			ret;
+
+	if (fd < 0 || line == NULL)
+		return (-1);
+	while ((ret = read(fd, buf, BUFF_SIZE)) > 0)
+	{
 		buf[ret] = '\0';
-		if ((res = check_extra(fd, buf, &start)) == 1)
-		{
-			*line = get_extra(fd, &start);
-			return (1);
-		}
-		if (res == -1)
-			return (-1);
+		if (s[fd] == NULL)
+			s[fd] = ft_strnew(1);
+		tmp = ft_strjoin(s[fd], buf);
+		free(s[fd]);
+		s[fd] = tmp;
+		if (ft_strchr(buf, '\n'))
+			break ;
 	}
-	if ((*line = get_extra(fd, &start)) != NULL)
-		return (1);
-	return (0);
-}
-
-char	*get_extra(int fd, t_lst **start)
-{
-	t_lst	*elem;
-	char	*begin;
-	char	*end;
-	char	*tmp;
-
-	elem = find_extra(fd, start);
-	if (elem->left == NULL)
-		return (NULL);
-	if ((end = ft_strstr((char *)elem->left, "\n")) != NULL)
-	{
-		if (!(begin = ft_strsub((char *)elem->left, 0,
-						(elem->left_size - ft_strlen(++end) - 2))))
-			return (NULL);
-		tmp = elem->left;
-		elem->left = (ft_strlen(end) == 0) ? NULL : (void *)ft_strdup(end);
-		elem->left_size = ft_strlen(end) + 1;
-		free(tmp);
-	}
-	else
-	{
-		if (!(begin = ft_strdup((char *)elem->left)))
-			return (NULL);
-		free(elem->left);
-		elem->left = NULL;
-		elem->left_size = 0;
-	}
-	return (begin);
-}
-
-t_lst	*find_extra(int fd, t_lst **start)
-{
-	t_lst	*tmp;
-
-	tmp = *start;
-	while (tmp && tmp->fd != fd)
-		tmp = tmp->next;
-	return (tmp);
-}
-
-int		check_extra(int fd, char *buf, t_lst **start)
-{
-	t_lst	*elem;
-	char	*tmp;
-
-	elem = find_extra(fd, start);
-	if (elem == NULL)
-	{
-		if (!(elem = (t_lst *)ft_lstnew((void *)buf, (ft_strlen(buf) + 1))))
-			return (-1);
-		elem->fd = fd;
-		ft_lstadd((t_list **)start, (t_list *)elem);
-	}
-	else
-	{
-		if (!(tmp = ft_strjoin((char *)elem->left, buf)))
-			return (-1);
-		free(elem->left);
-		elem->left = (void *)tmp;
-		elem->left_size = ft_strlen(tmp) + 1;
-	}
-	if (ft_strstr((char *)elem->left, "\n") != NULL)
-		return (1);
-	return (0);
+	if (ret < 0)
+		return (-1);
+	else if (ret == 0 && (s[fd] == NULL || s[fd][0] == '\0'))
+		return (0);
+	return (ft_new_line(s, line, fd, ret));
 }
