@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fbartoli <fbartoli@student.42.fr>          +#+  +:+       +#+        */
+/*   By: flbartol <flbartol@42.student.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/26 16:58:15 by fbartoli          #+#    #+#             */
-/*   Updated: 2018/12/12 14:03:16 by fbartoli         ###   ########.fr       */
+/*   Updated: 2019/01/06 18:07:16 by flbartol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "../includes/get_next_line.h"
 
 int		ft_new_line(char **s, char **line, int fd, int ret)
 {

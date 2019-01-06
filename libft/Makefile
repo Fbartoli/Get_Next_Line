@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: flbartol <flbartol@student.42.fr>          +#+  +:+       +#+         #
+#    By: flbartol <flbartol@42.student.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/09 15:47:25 by flbartol          #+#    #+#              #
-#    Updated: 2018/11/25 20:57:12 by flbartol         ###   ########.fr        #
+#    Updated: 2019/01/06 18:19:33 by flbartol         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,8 +24,9 @@ SRC= ft_memset.c ft_bzero.c ft_memcpy.c ft_memccpy.c ft_memmove.c ft_memchr.c \
 		ft_putstr.c ft_putendl.c ft_putnbr.c ft_putchar_fd.c \
 		ft_putstr_fd.c ft_putendl_fd.c ft_putnbr_fd.c \
 		ft_lstnew.c ft_lstdelone.c ft_lstdel.c ft_lstadd.c \
-		ft_lstiter.c ft_lstmap.c 
-HEADER= includes
+		ft_lstiter.c ft_lstmap.c
+
+HEADER= includes/
 SRC_DIR = srcs/
 OBJ_DIR = objects/
 
@@ -44,7 +45,7 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 	@cc $(FLAGS) -o $@ -c $< -I $(HEADER)
 
 clean:
-	@rm -rf $(OBJ)
+	@rm -rf $(OBJ_DIR)
 
 fclean: clean
 	@rm -rf $(NAME)
