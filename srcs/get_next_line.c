@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: flbartol <flbartol@42.student.fr>          +#+  +:+       +#+        */
+/*   By: flbartol <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/26 16:58:15 by fbartoli          #+#    #+#             */
-/*   Updated: 2019/01/06 18:07:16 by flbartol         ###   ########.fr       */
+/*   Created: 2018/12/18 14:07:33 by flbartol          #+#    #+#             */
+/*   Updated: 2018/12/18 14:08:31 by flbartol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/get_next_line.h"
+#include "get_next_line.h"
 
-int		ft_new_line(char **s, char **line, int fd, int ret)
+int		ft_new_line(char **s, char **line, int fd)
 {
 	char	*tmp;
 	int		len;
@@ -31,8 +31,6 @@ int		ft_new_line(char **s, char **line, int fd, int ret)
 	}
 	else if (s[fd][len] == '\0')
 	{
-		if (ret == BUFF_SIZE)
-			return (get_next_line(fd, line));
 		*line = ft_strdup(s[fd]);
 		ft_strdel(&s[fd]);
 	}
@@ -63,5 +61,5 @@ int		get_next_line(const int fd, char **line)
 		return (-1);
 	else if (ret == 0 && (s[fd] == NULL || s[fd][0] == '\0'))
 		return (0);
-	return (ft_new_line(s, line, fd, ret));
+	return (ft_new_line(s, line, fd));
 }
